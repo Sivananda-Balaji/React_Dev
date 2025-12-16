@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+
+    <script type="text/babel">
+      const ChatInput = () => {
+        return (
+          <>
+            <input placeholder="send a message to chatbox" size="30" />
+            <button>Send</button>
+          </>
+        );
+      };
+
+      const ChatMessage = ({ message, sender }) => {
+        return (
+          <div>
+            {sender === "robot" && <img src="../assets/robot.png" width="50" />}
+            {message}
+            {sender === "user" && <img src="../assets/user.png" width="50" />}
+          </div>
+        );
+      };
+
+      const App = () => {
+        return (
+          <>
+            <ChatInput />
+            <ChatMessage message="Hello Chatbot" sender="user" />
+            <ChatMessage message="Hello! How can I help you?" sender="robot" />
+            <ChatMessage message="can you get me today's date?" sender="user" />
+            <ChatMessage message="Today is December 16" sender="robot" />
+          </>
+        );
+      };
+
+      const container = document.querySelector(".js-container");
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
