@@ -12,27 +12,47 @@
     <script src="https://unpkg.com/supersimpledev/Chatbot.js"></script>
 
     <script type="text/babel">
-      const ChatInput = ({ chatMessages, setChatMessages }) => {
+      const ChatInput = ({ chatMessages, setChatMessages, setIsLoading }) => {
         const [inputText, setInputText] = React.useState("");
+
         const handleInputText = (e) => {
           const { value } = e.target;
           setInputText(value);
         };
-        const handleSend = () => {
-          const userMessage = {
-            message: inputText,
-            sender: "user",
-            id: crypto.randomUUID(),
-          };
-          const newMessages = [...chatMessages, userMessage];
-          const response = Chatbot.getResponse(inputText);
-          const robotMessage = {
-            message: response,
-            sender: "robot",
-            id: crypto.randomUUID(),
-          };
-          setChatMessages([...newMessages, robotMessage]);
-          setInputText("");
+        const handleKeyInput = (e) => {
+          const { key } = e;
+          if (key === "Enter" && inputText.length > 0) {
+            handleSend();
+          }
+          if (key === "Escape") {
+            setInputText("");
+          }
+        };
+        const handleSend = async () => {
+          if (inputText.length > 0 && inputText !== "") {
+            setIsLoading(true);
+            setInputText("");
+            const userMessage = {
+              message: inputText,
+              sender: "user",
+              id: crypto.randomUUID(),
+            };
+            const newMessages = [...chatMessages, userMessage];
+            const robotLoading = {
+              message: "Loading...",
+              sender: "robot",
+              id: crypto.randomUUID(),
+            };
+            setChatMessages([...newMessages, robotLoading]);
+            const response = await Chatbot.getResponseAsync(inputText);
+            const robotMessage = {
+              message: response,
+              sender: "robot",
+              id: crypto.randomUUID(),
+            };
+            setChatMessages([...newMessages, robotMessage]);
+            setIsLoading(false);
+          }
         };
         return (
           <>
@@ -41,13 +61,14 @@
               size="30"
               value={inputText}
               onChange={handleInputText}
+              onKeyDown={handleKeyInput}
             />
             <button onClick={handleSend}>Send</button>
           </>
         );
       };
 
-      const ChatMessage = ({ message, sender }) => {
+      const ChatMessage = ({ message, sender, isLoading }) => {
         return (
           <div>
             {sender === "robot" && <img src="../assets/robot.png" width="50" />}
@@ -57,11 +78,18 @@
         );
       };
 
-      const ChatMessages = ({ chatMessages }) => {
+      const ChatMessages = ({ chatMessages, isLoading }) => {
         return (
           <>
             {chatMessages.map(({ message, sender, id }) => {
-              return <ChatMessage message={message} sender={sender} key={id} />;
+              return (
+                <ChatMessage
+                  message={message}
+                  sender={sender}
+                  key={id}
+                  isLoading={isLoading}
+                />
+              );
             })}
           </>
         );
@@ -90,14 +118,17 @@
             id: "id4",
           },
         ]);
+        const [isLoading, setIsLoading] = React.useState(false);
 
         return (
           <>
             <ChatInput
               chatMessages={chatMessages}
               setChatMessages={setChatMessages}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
             />
-            <ChatMessages chatMessages={chatMessages} />
+            <ChatMessages chatMessages={chatMessages} isLoading={isLoading} />
           </>
         );
       };
