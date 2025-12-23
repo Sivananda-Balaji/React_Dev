@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lesson 3G-3H</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const container = document.querySelector(".js-container");
+      const Greetings = () => {
+        const [userName, setUserName] = React.useState("");
+        return (
+          <div>
+            <input
+              id="userName"
+              type="text"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+            <button onClick={() => setUserName("")}>Reset</button>
+            <button onClick={() => setUserName("Alice")}>Example</button>
+            <p>Hello {userName}</p>
+          </div>
+        );
+      };
+      const App = () => {
+        return (
+          <>
+            <Greetings />
+          </>
+        );
+      };
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
