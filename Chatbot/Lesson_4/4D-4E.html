@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lesson 4D-4E</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      .input-section input {
+        padding: 10px 12px;
+        font-size: 15px;
+        border-width: 1px;
+        border-radius: 5px;
+      }
+      .password-section input {
+        margin-top: 10px;
+        margin-right: 10px;
+      }
+      .button-section {
+        margin-top: 15px;
+      }
+      .button-section button,
+      .password-section button {
+        background-color: rgb(0, 123, 255);
+        color: #fff;
+        border: none;
+        margin-right: 10px;
+        padding: 10px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const container = document.querySelector(".js-container");
+      const LoginForm = () => {
+        const [showPassword, setShowPassword] = React.useState(false);
+        const handlePassword = () => {
+          setShowPassword((prev) => !prev);
+        };
+        return (
+          <div>
+            <div>
+              <h3>Hello, welcome to my website</h3>
+            </div>
+            <div className="input-section">
+              <div className="email-section">
+                <input type="text" id="userEmail" placeholder="Email" />
+              </div>
+              <div className="password-section">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="userPassword"
+                  placeholder="Password"
+                />
+                <button onClick={handlePassword}>
+                  {showPassword ? "Show" : "Hide"}
+                </button>
+              </div>
+            </div>
+            <div className="button-section">
+              <button>Login</button>
+              <button>Sign Up</button>
+            </div>
+          </div>
+        );
+      };
+      const App = () => {
+        return (
+          <>
+            <LoginForm />
+          </>
+        );
+      };
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>

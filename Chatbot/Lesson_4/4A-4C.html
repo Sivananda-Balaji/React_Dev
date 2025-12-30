@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lesson 4A-4C</title>
+    <style>
+      .button-container button {
+        color: #fff;
+        border: none;
+        padding: 10px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 15px;
+      }
+      .on-status button {
+        background-color: rgb(25, 135, 84);
+      }
+      .off-status button {
+        background-color: rgb(220, 53, 69);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const container = document.querySelector(".js-container");
+      const ButtonContainer = () => {
+        const [isButtonOn, setIsButtonOn] = React.useState(false);
+        const handleClick = () => {
+          setIsButtonOn((prev) => !prev);
+        };
+        return (
+          <div
+            className={`button-container ${
+              isButtonOn ? "on-status" : "off-status"
+            }`}
+          >
+            <button onClick={handleClick}>{isButtonOn ? "ON" : "OFF"}</button>
+          </div>
+        );
+      };
+      const App = () => {
+        return (
+          <>
+            <ButtonContainer />
+          </>
+        );
+      };
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
